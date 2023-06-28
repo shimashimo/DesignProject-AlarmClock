@@ -11,7 +11,7 @@ class Radio:
 #
         self.Volume = 0
         self.Frequency = 88
-        self.Mute = False
+        self.Mute = True
 #
 # Update the values with the ones passed in the initialization code
 #
@@ -44,7 +44,7 @@ class Radio:
 
     def SetVolume( self, NewVolume ):
 #
-# Conver t the string into a integer
+# Convert the string into a integer
 #
         try:
             NewVolume = int( NewVolume )
@@ -166,119 +166,3 @@ class Radio:
             StereoStatus = False
         
         return( MuteStatus, VolumeStatus, FrequencyStatus, StereoStatus )
-#
-# initialize the FM radio
-#
-fm_radio = Radio( 100.3, 0, False )
-
-# Assign Pins to Pico
-pushbutton = machine.Pin(12, machine.Pin.IN, machine.Pin.PULL_UP)
-
-def int_handler(pin):
-        global count, last_time_pressed
-        new_time = utime.ticks_ms()
-        
-        print("irq called")
-        
-        if (new_time - last_time_pressed) > 200:
-            Settings = fm_radio.GetSettings()
-            current_volume = Settings[1]
-            print("Printing Current Volume in IRQ: %d" % current_volume)
-            current_volume = current_volume + 1
-            if ( fm_radio.SetVolume( current_volume ) == True ):
-                fm_radio.ProgramRadio()
-            else:
-                print( "Invalid volume level( Range is 0 to 15 )" )
-            last_time_pressed = new_time
-            
-
-pushbutton.irq(trigger=machine.Pin.IRQ_RISING, handler=int_handler)
-last_time_pressed = 0
-
-while ( True ):
-
-#
-# display the menu
-#
-    
-    print("")
-    print( "ECE 299 FM Radio Demo Menu" );
-    print("")
-    print( "1 - change radio frequency" )
-    print( "2 - change volume level" )
-    print( "3 - mute audio" )
-    print( "4 - read current settings" )
-    
-    select = input( "Enter menu number > " )
-
-#
-# Set radio frequency
-#
-    if ( select == "1" ):
-        Frequency = input( "Enter frequncy in Mhz ( IE 100.3 ) > " )
-
-        if ( fm_radio.SetFrequency( Frequency ) == True ):
-            fm_radio.ProgramRadio()
-        else:
-            print( "Invalid frequency( Range is 88.0 to 108.0 )" )
-
-#
-# Set volume level of radio
-#
-    elif ( select == "2" ):
-        Volume = input( "Enter volume level ( 0 to 15, 15 is loud ) > " )
-        
-        if ( fm_radio.SetVolume( Volume ) == True ):
-            fm_radio.ProgramRadio()
-        else:
-            print( "Invalid volume level( Range is 0 to 15 )" )
-        
-#        
-# Enable mute of radio       
-#        
-    elif( select == "3" ):
-        Mute = input( "Enter mute ( 1 for Mute, 0 for audio ) > " )
-        
-        if ( fm_radio.SetMute( Mute ) == True ):
-            fm_radio.ProgramRadio()
-        else:
-            print( "Invalid mute setting" )
-
-#
-# Display radio current settings
-#
-    elif( select == "4" ):
-        Settings = fm_radio.GetSettings()
-
-        print( Settings )
-        print("")
-        print("Radio Status")
-        print("")
-
-        print( "Mute: ", end="" )
-        if ( Settings[0] == True ):
-            print( "enabled" )
-        else:
-            print( "disabled" )
-
-        print( "Volume: %d" % Settings[1] )
-
-        print( "Frequency: %5.1f" % Settings[2] )
-
-        print( "Mode: ", end="" )
-        if ( Settings[3] == True ):
-            print( "stereo" )
-        else:
-            print( "mono" )
-
-
-    else:
-        print( "Invalid menu option" )
-
-        
-
-
-
-    
-    
-  
