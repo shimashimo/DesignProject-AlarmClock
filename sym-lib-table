@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "ECE")(type "KiCad")(uri "//samba4.engr.uvic.ca/echatham/Downloads/ECE Kicad Libraries/ECE Kicad Libraries/ECE.kicad_sym")(options "")(descr ""))
+)

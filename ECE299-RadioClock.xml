@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>\\samba4.engr.uvic.ca\echatham\Documents\ECE299-RadioClock\ECE299-RadioClock.kicad_sch</source>
+    <date>2023-06-21 12:01:58 PM</date>
+    <tool>Eeschema 7.0.5</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>ECE 299 - Radio Clock - Lab 4</title>
+        <company/>
+        <rev>0</rev>
+        <date>2023-06-21</date>
+        <source>ECE299-RadioClock.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>100nF</value>
+      <footprint>Capacitor_THT:C_Axial_L3.8mm_D2.6mm_P7.50mm_Horizontal</footprint>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f3911121-aab2-49e2-94f2-cdd62794d57e</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>10uF</value>
+      <footprint>Capacitor_THT:CP_Radial_D6.3mm_P2.50mm</footprint>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f5791134-32ed-409a-b374-22afb50f3830</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>10uF</value>
+      <footprint>Capacitor_THT:CP_Radial_D6.3mm_P2.50mm</footprint>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f3c9b059-b5e0-4f01-adcb-691561a0fed4</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>470uF</value>
+      <footprint>Capacitor_THT:CP_Radial_D6.3mm_P2.50mm</footprint>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Unpolarized capacitor"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c71ea6cd-d485-4f3c-b7e2-e84486b301af</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>10</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8597de87-99f6-490a-9519-6ad847dc4063</tstamps>
+    </comp>
+    <comp ref="Rpullup1">
+      <value>2k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3b87657e-40c1-416e-bc10-a7064933abef</tstamps>
+    </comp>
+    <comp ref="Rpullup2">
+      <value>2k</value>
+      <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>23a4f85f-2886-4e8c-96f7-f77e135198d4</tstamps>
+    </comp>
+    <comp ref="Speaker1">
+      <value>8</value>
+      <footprint>Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical</footprint>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Resistor"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5cc8e87f-b308-4e2c-b99f-d76de6db2118</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>RPi_Pico_TH</value>
+      <footprint>ECE:RPi_Pico_TH</footprint>
+      <libsource lib="ECE" part="RPi_Pico_TH" description="Raspberry Pi Pico"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Raspberry Pi Pico"/>
+      <property name="ki_keywords" value="Raspberry Pi Pico"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>24543594-2601-4e1e-a744-92eeae126325</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>RDA5807M_Module</value>
+      <footprint>ECE:RDA5807M_Module_TH</footprint>
+      <libsource lib="ECE" part="RDA5807M_Module" description=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a606e4e8-2e04-4ded-944c-ccae594c9123</tstamps>
+    </comp>
+    <comp ref="U3">
+      <value>LM386</value>
+      <footprint>Package_DIP:DIP-8-16_W7.62mm</footprint>
+      <datasheet>http://www.ti.com/lit/ds/symlink/lm386.pdf</datasheet>
+      <libsource lib="Amplifier_Audio" part="LM386" description="Low Voltage Audio Power Amplifier, DIP-8/SOIC-8/SSOP-8"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="ECE299-RadioClock.kicad_sch"/>
+      <property name="ki_description" value="Low Voltage Audio Power Amplifier, DIP-8/SOIC-8/SSOP-8"/>
+      <property name="ki_keywords" value="single Power opamp"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e3eacf18-973a-4b9f-9441-9dbec83dc201</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Amplifier_Audio" part="LM386">
+      <description>Low Voltage Audio Power Amplifier, DIP-8/SOIC-8/SSOP-8</description>
+      <docs>http://www.ti.com/lit/ds/symlink/lm386.pdf</docs>
+      <footprints>
+        <fp>SOIC*3.9x4.9mm*P1.27mm*</fp>
+        <fp>DIP*W7.62mm*</fp>
+        <fp>MSSOP*P0.65mm*</fp>
+        <fp>TSSOP*3x3mm*P0.5mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LM386</field>
+        <field name="Datasheet">http://www.ti.com/lit/ds/symlink/lm386.pdf</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GAIN" type="input"/>
+        <pin num="2" name="-" type="input"/>
+        <pin num="3" name="+" type="input"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="" type="output"/>
+        <pin num="6" name="V+" type="power_in"/>
+        <pin num="7" name="BYPASS" type="input"/>
+        <pin num="8" name="GAIN" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C">
+      <description>Unpolarized capacitor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R">
+      <description>Resistor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="ECE" part="RDA5807M_Module">
+      <footprints>
+        <fp>RDA5807M_Module_SM</fp>
+        <fp>RDA5807M_Module_TH</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">RDA5807M_Module</field>
+        <field name="Footprint">ECE:RDA5807M_Module_TH</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SDIO" type="bidirectional"/>
+        <pin num="2" name="SCLK" type="input"/>
+        <pin num="3" name="N/C" type="no_connect"/>
+        <pin num="4" name="N/C" type="no_connect"/>
+        <pin num="5" name="VDD" type="power_in"/>
+        <pin num="6" name="GND" type="power_in"/>
+        <pin num="7" name="ROUT" type="output"/>
+        <pin num="8" name="LOUT" type="output"/>
+        <pin num="9" name="N/C" type="no_connect"/>
+        <pin num="10" name="FMIN" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="ECE" part="RPi_Pico_TH">
+      <description>Raspberry Pi Pico</description>
+      <fields>
+        <field name="Reference">U?</field>
+        <field name="Value">RPi_Pico_TH</field>
+        <field name="Footprint">ECE:RPi_Pico_TH</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GP0" type="bidirectional"/>
+        <pin num="2" name="GP1" type="bidirectional"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="GP2" type="bidirectional"/>
+        <pin num="5" name="GP3" type="bidirectional"/>
+        <pin num="6" name="GP4" type="bidirectional"/>
+        <pin num="7" name="GP5" type="bidirectional"/>
+        <pin num="8" name="GND" type="power_in"/>
+        <pin num="9" name="GP6" type="bidirectional"/>
+        <pin num="10" name="GP7" type="bidirectional"/>
+        <pin num="11" name="GP8" type="bidirectional"/>
+        <pin num="12" name="GP9" type="bidirectional"/>
+        <pin num="13" name="GND" type="power_in"/>
+        <pin num="14" name="GP10" type="bidirectional"/>
+        <pin num="15" name="GP11" type="bidirectional"/>
+        <pin num="16" name="GP12" type="bidirectional"/>
+        <pin num="17" name="GP13" type="bidirectional"/>
+        <pin num="18" name="GND" type="power_in"/>
+        <pin num="19" name="GP14" type="bidirectional"/>
+        <pin num="20" name="GP15" type="bidirectional"/>
+        <pin num="21" name="GP16" type="bidirectional"/>
+        <pin num="22" name="GP17" type="bidirectional"/>
+        <pin num="23" name="GND" type="power_in"/>
+        <pin num="24" name="GP18" type="bidirectional"/>
+        <pin num="25" name="GP19" type="bidirectional"/>
+        <pin num="26" name="GP20" type="bidirectional"/>
+        <pin num="27" name="GP21" type="bidirectional"/>
+        <pin num="28" name="GND" type="power_in"/>
+        <pin num="29" name="GP22" type="bidirectional"/>
+        <pin num="30" name="RUN" type="input"/>
+        <pin num="31" name="GP26/ADC0" type="bidirectional"/>
+        <pin num="32" name="GP27/ADC1" type="bidirectional"/>
+        <pin num="33" name="AGND" type="power_in"/>
+        <pin num="34" name="GP28/ADC2" type="bidirectional"/>
+        <pin num="35" name="ADC_VREF" type="power_in"/>
+        <pin num="36" name="3V3" type="power_out"/>
+        <pin num="37" name="3V3_EN" type="input"/>
+        <pin num="38" name="GND" type="power_in"/>
+        <pin num="39" name="VSYS" type="power_out"/>
+        <pin num="40" name="VBUS" type="power_in"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Amplifier_Audio">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Amplifier_Audio.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>C:\Program Files\KiCad\7.0\share\kicad\symbols\/Device.kicad_sym</uri>
+    </library>
+    <library logical="ECE">
+      <uri>\\samba4.engr.uvic.ca\echatham\Downloads\ECE Kicad Libraries\ECE Kicad Libraries\ECE.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+3.3V">
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="Rpullup1" pin="1" pintype="passive"/>
+      <node ref="Rpullup2" pin="1" pintype="passive"/>
+      <node ref="U1" pin="36" pinfunction="3V3" pintype="power_out"/>
+      <node ref="U2" pin="5" pinfunction="VDD" pintype="power_in"/>
+      <node ref="U3" pin="8" pinfunction="GAIN" pintype="input"/>
+    </net>
+    <net code="2" name="GND">
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="Speaker1" pin="2" pintype="passive"/>
+      <node ref="U1" pin="38" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="6" pinfunction="GND" pintype="power_in"/>
+      <node ref="U3" pin="2" pinfunction="-" pintype="input"/>
+      <node ref="U3" pin="4" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="3" name="Net-(C3-Pad1)">
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="U3" pin="5" pintype="output"/>
+    </net>
+    <net code="4" name="Net-(C3-Pad2)">
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="R1" pin="1" pintype="passive"/>
+    </net>
+    <net code="5" name="Net-(C4-Pad2)">
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="Speaker1" pin="1" pintype="passive"/>
+    </net>
+    <net code="6" name="Net-(U1-GP26{slash}ADC0)">
+      <node ref="Rpullup2" pin="2" pintype="passive"/>
+      <node ref="U1" pin="31" pinfunction="GP26/ADC0" pintype="bidirectional"/>
+      <node ref="U2" pin="1" pinfunction="SDIO" pintype="bidirectional"/>
+    </net>
+    <net code="7" name="Net-(U1-GP27{slash}ADC1)">
+      <node ref="Rpullup1" pin="2" pintype="passive"/>
+      <node ref="U1" pin="32" pinfunction="GP27/ADC1" pintype="bidirectional"/>
+      <node ref="U2" pin="2" pinfunction="SCLK" pintype="input"/>
+    </net>
+    <net code="8" name="Net-(U2-ROUT)">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="U2" pin="7" pinfunction="ROUT" pintype="output"/>
+    </net>
+    <net code="9" name="Net-(U3-+)">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="U3" pin="3" pinfunction="+" pintype="input"/>
+    </net>
+    <net code="10" name="unconnected-(U1-3V3_EN-Pad37)">
+      <node ref="U1" pin="37" pinfunction="3V3_EN" pintype="input+no_connect"/>
+    </net>
+    <net code="11" name="unconnected-(U1-ADC_VREF-Pad35)">
+      <node ref="U1" pin="35" pinfunction="ADC_VREF" pintype="power_in+no_connect"/>
+    </net>
+    <net code="12" name="unconnected-(U1-AGND-Pad33)">
+      <node ref="U1" pin="33" pinfunction="AGND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="13" name="unconnected-(U1-GND-Pad3)">
+      <node ref="U1" pin="3" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="14" name="unconnected-(U1-GND-Pad8)">
+      <node ref="U1" pin="8" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="15" name="unconnected-(U1-GND-Pad13)">
+      <node ref="U1" pin="13" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="16" name="unconnected-(U1-GND-Pad18)">
+      <node ref="U1" pin="18" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="17" name="unconnected-(U1-GND-Pad23)">
+      <node ref="U1" pin="23" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="18" name="unconnected-(U1-GND-Pad28)">
+      <node ref="U1" pin="28" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="19" name="unconnected-(U1-GND-Pad33)">
+      <node ref="U1" pin="33" pinfunction="GND" pintype="power_in+no_connect"/>
+    </net>
+    <net code="20" name="unconnected-(U1-GP0-Pad1)">
+      <node ref="U1" pin="1" pinfunction="GP0" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="21" name="unconnected-(U1-GP1-Pad2)">
+      <node ref="U1" pin="2" pinfunction="GP1" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="22" name="unconnected-(U1-GP2-Pad4)">
+      <node ref="U1" pin="4" pinfunction="GP2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="23" name="unconnected-(U1-GP3-Pad5)">
+      <node ref="U1" pin="5" pinfunction="GP3" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="24" name="unconnected-(U1-GP4-Pad6)">
+      <node ref="U1" pin="6" pinfunction="GP4" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="25" name="unconnected-(U1-GP5-Pad7)">
+      <node ref="U1" pin="7" pinfunction="GP5" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="26" name="unconnected-(U1-GP6-Pad9)">
+      <node ref="U1" pin="9" pinfunction="GP6" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="27" name="unconnected-(U1-GP7-Pad10)">
+      <node ref="U1" pin="10" pinfunction="GP7" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="28" name="unconnected-(U1-GP8-Pad11)">
+      <node ref="U1" pin="11" pinfunction="GP8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="29" name="unconnected-(U1-GP9-Pad12)">
+      <node ref="U1" pin="12" pinfunction="GP9" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="30" name="unconnected-(U1-GP10-Pad14)">
+      <node ref="U1" pin="14" pinfunction="GP10" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="31" name="unconnected-(U1-GP11-Pad15)">
+      <node ref="U1" pin="15" pinfunction="GP11" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="32" name="unconnected-(U1-GP12-Pad16)">
+      <node ref="U1" pin="16" pinfunction="GP12" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="33" name="unconnected-(U1-GP13-Pad17)">
+      <node ref="U1" pin="17" pinfunction="GP13" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="34" name="unconnected-(U1-GP14-Pad19)">
+      <node ref="U1" pin="19" pinfunction="GP14" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="35" name="unconnected-(U1-GP15-Pad20)">
+      <node ref="U1" pin="20" pinfunction="GP15" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="36" name="unconnected-(U1-GP16-Pad21)">
+      <node ref="U1" pin="21" pinfunction="GP16" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="37" name="unconnected-(U1-GP17-Pad22)">
+      <node ref="U1" pin="22" pinfunction="GP17" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="38" name="unconnected-(U1-GP18-Pad24)">
+      <node ref="U1" pin="24" pinfunction="GP18" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="39" name="unconnected-(U1-GP19-Pad25)">
+      <node ref="U1" pin="25" pinfunction="GP19" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="40" name="unconnected-(U1-GP20-Pad26)">
+      <node ref="U1" pin="26" pinfunction="GP20" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="41" name="unconnected-(U1-GP21-Pad27)">
+      <node ref="U1" pin="27" pinfunction="GP21" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="42" name="unconnected-(U1-GP22-Pad29)">
+      <node ref="U1" pin="29" pinfunction="GP22" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="43" name="unconnected-(U1-GP28{slash}ADC2-Pad34)">
+      <node ref="U1" pin="34" pinfunction="GP28/ADC2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="44" name="unconnected-(U1-RUN-Pad30)">
+      <node ref="U1" pin="30" pinfunction="RUN" pintype="input+no_connect"/>
+    </net>
+    <net code="45" name="unconnected-(U1-VBUS-Pad40)">
+      <node ref="U1" pin="40" pinfunction="VBUS" pintype="power_in+no_connect"/>
+    </net>
+    <net code="46" name="unconnected-(U1-VSYS-Pad39)">
+      <node ref="U1" pin="39" pinfunction="VSYS" pintype="power_out+no_connect"/>
+    </net>
+    <net code="47" name="unconnected-(U2-FMIN-Pad10)">
+      <node ref="U2" pin="10" pinfunction="FMIN" pintype="input+no_connect"/>
+    </net>
+    <net code="48" name="unconnected-(U2-LOUT-Pad8)">
+      <node ref="U2" pin="8" pinfunction="LOUT" pintype="output+no_connect"/>
+    </net>
+    <net code="49" name="unconnected-(U2-N{slash}C-Pad3)">
+      <node ref="U2" pin="3" pinfunction="N/C" pintype="no_connect"/>
+    </net>
+    <net code="50" name="unconnected-(U2-N{slash}C-Pad4)">
+      <node ref="U2" pin="4" pinfunction="N/C" pintype="no_connect"/>
+    </net>
+    <net code="51" name="unconnected-(U2-N{slash}C-Pad9)">
+      <node ref="U2" pin="9" pinfunction="N/C" pintype="no_connect"/>
+    </net>
+    <net code="52" name="unconnected-(U3-BYPASS-Pad7)">
+      <node ref="U3" pin="7" pinfunction="BYPASS" pintype="input+no_connect"/>
+    </net>
+    <net code="53" name="unconnected-(U3-GAIN-Pad1)">
+      <node ref="U3" pin="1" pinfunction="GAIN" pintype="input+no_connect"/>
+    </net>
+    <net code="54" name="unconnected-(U3-V+-Pad6)">
+      <node ref="U3" pin="6" pinfunction="V+" pintype="power_in+no_connect"/>
+    </net>
+  </nets>
+</export>
