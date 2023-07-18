@@ -9,7 +9,11 @@ class Radio:
 #
 # set the initial values of the radio
 #
+<<<<<<< HEAD
         self.Volume = 0
+=======
+        self.Volume = 2
+>>>>>>> 488612a6a4e2db49f7e0333357556d996bc75ea4
         self.Frequency = 88
         self.Mute = False
 #
@@ -44,7 +48,11 @@ class Radio:
 
     def SetVolume( self, NewVolume ):
 #
+<<<<<<< HEAD
 # Conver t the string into a integer
+=======
+# Convert the string into a integer
+>>>>>>> 488612a6a4e2db49f7e0333357556d996bc75ea4
 #
         try:
             NewVolume = int( NewVolume )
@@ -169,6 +177,7 @@ class Radio:
 #
 # initialize the FM radio
 #
+<<<<<<< HEAD
 fm_radio = Radio( 100.3, 0, False )
 
 # Assign Pins to Pico
@@ -185,15 +194,59 @@ def int_handler(pin):
             current_volume = Settings[1]
             print("Printing Current Volume in IRQ: %d" % current_volume)
             current_volume = current_volume + 1
+=======
+fm_radio = Radio( 101.9, 0, False )
+
+# Assign Push button to Pico
+pushbutton = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
+
+# Interrupt handler for button press
+def int_handler(pin):
+        global count, last_time
+
+        # Keep track of when interrupt is called
+        new_time = utime.ticks_ms()
+        
+        # Debugging print message
+        # print("IRQ called")
+        
+        # Compare time of interrupt call and last time signal was valid (i.e. last time count was incremented)
+        if (new_time - last_time) > 200:
+
+            # Get the current volume from the Settings in the Radio class
+            Settings = fm_radio.GetSettings()
+            current_volume = Settings[1]
+
+            # Increment the current volume
+            current_volume = current_volume + 1
+
+            # Uncomment for Debugging
+            # print("Printing Current Volume in IRQ: %d" % current_volume)
+
+            # Validate volume is within the acceptable range
+>>>>>>> 488612a6a4e2db49f7e0333357556d996bc75ea4
             if ( fm_radio.SetVolume( current_volume ) == True ):
                 fm_radio.ProgramRadio()
             else:
                 print( "Invalid volume level( Range is 0 to 15 )" )
+<<<<<<< HEAD
             last_time_pressed = new_time
             
 
 pushbutton.irq(trigger=machine.Pin.IRQ_RISING, handler=int_handler)
 last_time_pressed = 0
+=======
+
+            # Set the last valid button press time to current time
+            last_time = new_time
+            
+
+# Connect Interrupt Handler to push button
+pushbutton.irq(trigger=machine.Pin.IRQ_RISING, handler=int_handler)
+
+# Initialize comparative time variable
+last_time = 0
+>>>>>>> 488612a6a4e2db49f7e0333357556d996bc75ea4
 
 while ( True ):
 
