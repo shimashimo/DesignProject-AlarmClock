@@ -1,5 +1,5 @@
 from machine import Pin, SPI, I2C, Timer # Classes associated with the machine library. 
-import utime
+import utime, time
 from utime import localtime
 
 # The below specified libraries have to be included. Also, ssd1306.py must be saved on the Pico. 
@@ -24,7 +24,7 @@ spi_cs  = Pin(13) # chip select; to be connected to the SPI chip select of the P
 
 
 # SPI Device ID can be 0 or 1. It must match the wiring. 
-SPI_DEVICE = 1 # Because the peripheral is connected to SPI 0 hardware lines of the Pico
+SPI_DEVICE = 1 # Because the peripheral is connected to SPI 1 hardware lines of the Pico
 
 # initialize the SPI interface for the OLED display
 oled_spi = SPI( SPI_DEVICE, baudrate= 100000, sck= spi_sck, mosi= spi_sda )
@@ -37,6 +37,11 @@ menu_button = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
 up_button = machine.Pin(1, machine.Pin.IN, machine.Pin.PULL_UP)
 down_button = machine.Pin(2, machine.Pin.IN, machine.Pin.PULL_UP)
 select_button = machine.Pin(3, machine.Pin.IN, machine.Pin.PULL_UP)
+# snooze_button = machine.Pin(4, machine.Pin.IN, machine.Pin.PULL_UP)
+
+p4 = machine.Pin(4)
+speaker = machine.PWM(p4)
+speaker.duty_u16(int(65535/2))
 
 led_onboard = machine.Pin(25, machine.Pin.OUT)     
    
@@ -216,11 +221,6 @@ def down_handler(pin):
                 Dmin = tempMin
                 am_pm = tempAm_pm
         
-        if(count == 4):
-            print("PRESSED SNOOZE")
-            snooze_timer.init(mode=Timer.ONE_SHOT, period=1000 , callback=timer_interrupt)
-            snooze_status = True
-            
         if(count == 5):
             Settings = fm_radio.GetSettings()
             volume = Settings[1]
@@ -263,7 +263,26 @@ def select_handler(pin):
             else:
                 print( "Invalid volume level( Range is 0 to 15 )" )
             last_time_pressed = new_time
-            
+
+def snooze_handler(pin):
+    global count, last_time_pressed, snooze_status, oled
+    new_time = utime.ticks_ms()
+
+    print("snooze irq called")
+
+    if (new_time - last_time_pressed) > 200:
+        last_time_pressed = new_time
+
+        if(count == 4):
+                print("PRESSED SNOOZE")
+
+                oled.fill(0)
+                oled.text("Snoozing for 1 minute", 10, 10)
+                oled.show()
+
+                snooze_timer.init(mode=Timer.ONE_SHOT, period=10000 , callback=timer_interrupt) #Set snooze timer for 60 seconds. Time in ms
+                snooze_status = True
+
 # Timer Interrupt for the alarm. Will go off after the passed time into built in timer mode in state 3
 def timer_interrupt(timer):
     global alarm_active, snooze_status
@@ -308,6 +327,7 @@ menu_button.irq(trigger=machine.Pin.IRQ_RISING, handler=state_handler)
 up_button.irq(trigger=machine.Pin.IRQ_RISING, handler=up_handler)
 down_button.irq(trigger=machine.Pin.IRQ_RISING, handler=down_handler)
 select_button.irq(trigger=machine.Pin.IRQ_RISING, handler=select_handler)
+# snooze_button.irq(trigger=machine.Pin.IRQ_RISING, handler=snooze_handler)
                 
             
 # Initialize State Counter
@@ -326,8 +346,8 @@ selectcount = 0
 snooze_timer = Timer()
 
 # Vars for alarm time and states/status
-handlerhour = 14
-handlermin = 45
+handlerhour = 99
+handlermin = 99
 handlersec = 0
 
 alarm_am_pm = "AM" #Set default Alarm to AM
@@ -376,7 +396,7 @@ while True:
         
     Dyear, Dmonth, Dday, Dweekday, Dhour, Dmin, Dsec, Dsubseconds = (timeObj)  
     
-    
+    #
     if(trigger_alarm(handlerhour, handlermin, handlersec, Dhour, Dmin, Dsec, ap_hour_format, alarm_am_pm="DE", am_pm="DE") == True or alarm_state == True):
         
         if(snooze_status == True):
@@ -386,7 +406,25 @@ while True:
             count = 4
             alarm_state = True
             alarm_active = True
+            
             print("ALARM")
+            # speaker.freq(554)
+            # time.sleep(1)
+            # speaker.freq(494)
+            # time.sleep(1)
+            # speaker.freq(440)
+            # time.sleep(1.5)
+
+            # print("First")
+
+            # speaker.freq(554)
+            # time.sleep(1)
+            # speaker.freq(494)
+            # time.sleep(1)
+            # speaker.freq(440)
+            # time.sleep(1.5)
+
+            # speaker.duty_u16(0)
         utime.sleep_ms(1000)
         
     
@@ -621,6 +659,11 @@ while True:
     
     #Set alarm state
     elif(count == 3):
+
+        # Set the alarm to the current time on first run through program.
+        if(handlerhour == 99 and handlermin == 99):
+            handlerhour = Dhour
+            handlermin = Dmin
         
         fm_radio = Radio( 100.3, 0, True )
 
@@ -662,7 +705,6 @@ while True:
             # tell to display the hour, min and sec
             oled.fill(0)
             oled.text("Set/Edit Alarm", 10, 10)
-
 
             if(handlerhour < 10):
                 oled.text("0", 44, 30, 1)
@@ -812,16 +854,14 @@ while True:
         
         continue
         
-    #Snooze or off state
-        ## can probably combine this state with alarm state. If the alarm flag is True, then if menu_button pressed snooze, select_button for off?
+    #Alarm Active State
     elif(count == 4):
-        
-        initializetimer = True
-        
-        fm_radio = Radio( 100.3, 0, False )
-        
-        oled.text("Snooze State", 25, 30 )
-        oled.text("Count is: %4d" % count, 0, 50 )
+        oled.fill(0)
+        oled.text("Alarm!", 20, 10 )
+        oled.text("\'Stem\' to Snooze", 2, 30)
+        oled.text("\'Select\' for Off", 2, 50)
+        # oled.text("Count is: %4d" % count, 0, 50 )
+        oled.show()
         
     #Radio State
     elif(count == 5):
