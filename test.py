@@ -7,9 +7,15 @@ txt = b'@\x81\x10\x88d\xde?\t\x18!\xc8\x9a\x82W\x00\x19\n \x80\x01"\x11\xf88\xc5
 # txt = b'\xc0\r%P\x04\x00\x84\x82\x82\x00'
 string = str(txt)
 byteshit = list(txt)
-print(byteshit[247])
+print(txt.hex())
+
 # z = [i for i,x in enumerate(byteshit) if x==192]
-# myhex = txt.hex()
+myhex = txt.hex()
+n=4
+hexsplit = [myhex[i:i+n] for i in range(0, len(myhex), n)]
+
+print(hexsplit)
+
 # numbits = 8
 
 # mybin = bin(int(myhex, 16))[2:].zfill(numbits)
@@ -19,7 +25,7 @@ print(byteshit[247])
 # n = 16
 # binary = [line[i:i+n] for i in range(0, len(line), n)]
 # print(binary)
-# for i in range(0, len(binary)):
-#     print(binary[i])
+for i in range(0, len(hexsplit)):
+    print(hexsplit[i])
 # print((0x04))
 # print(txt[0x00] & 0x04)
