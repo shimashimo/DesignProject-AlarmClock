@@ -136,7 +136,7 @@ class Radio:
 
         self.UpdateSettings()
 
-        print(list(self.Settings))
+        print(self.Settings)
 
         self.radio_i2c.writeto( self.i2c_device_address, self.Settings )
 
