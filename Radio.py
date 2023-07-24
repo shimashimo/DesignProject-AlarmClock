@@ -135,6 +135,9 @@ class Radio:
     def ProgramRadio( self ):
 
         self.UpdateSettings()
+
+        print(list(self.Settings))
+
         self.radio_i2c.writeto( self.i2c_device_address, self.Settings )
 
 #
@@ -147,12 +150,16 @@ class Radio:
 #
         self.RadioStatus = self.radio_i2c.readfrom( self.i2c_device_address, 256 )
 
+        print(self.RadioStatus)
+
         if (( self.RadioStatus[0xF0] & 0x40 ) != 0x00 ):
             MuteStatus = False
         else:
             MuteStatus = True
             
         VolumeStatus = self.RadioStatus[0xF7] & 0x0F
+
+        print("VolumeStatus", VolumeStatus)
  
  #
  # Convert the frequency 10 bit count into actual frequency in Mhz
@@ -166,10 +173,47 @@ class Radio:
             StereoStatus = False
         
         return( MuteStatus, VolumeStatus, FrequencyStatus, StereoStatus )
+    
+
+    def IncreaseVolume( self ):
+
+        # Read entire register space, gets info on all settings (Volume, Frequency, Mute). We only need Volume
+        self.RadioStatus = self.radio_i2c.readfrom( self.i2c_device_address, 256 )
+
+        Volume = self.RadioStatus[0xF7] & 0x0F      # The & 0x0F caps the volume at 15, as it is a bitwise AND operation 
+                                                    # anything greater than 15, such as 1001 1111, AND'ed with 0000 1111 will be 0000 1111.
+        if(Volume >= 15):
+            return False
+
+        self.Volume = Volume + 1
+        
+        self.Settings[7] = 0x80 + self.Volume
+        self.radio_i2c.writeto( self.i2c_device_address, self.Settings )
+
+        return True
+    
+
+    def DecreaseVolume( self ):
+
+        # Read entire register space, gets info on all settings (Volume, Frequency, Mute). We only need Volume
+        self.RadioStatus = self.radio_i2c.readfrom( self.i2c_device_address, 256 )
+
+        Volume = self.RadioStatus[0xF7] & 0x0F      # The & 0x0F caps the volume at 15, as it is a bitwise AND operation 
+                                                    # anything greater than 15, such as 1001 1111, AND'ed with 0000 1111 will be 0000 1111.
+        if(Volume <= 0):
+            return False
+        
+        self.Volume = Volume - 1
+
+        self.Settings[7] = 0x80 + self.Volume
+        self.radio_i2c.writeto( self.i2c_device_address, self.Settings )
+
+        return True
+        
 #
 # initialize the FM radio
 #
-fm_radio = Radio( 100.3, 0, False )
+fm_radio = Radio( 100.3, 1, False )
 
 # Assign Pins to Pico
 pushbutton = machine.Pin(12, machine.Pin.IN, machine.Pin.PULL_UP)
@@ -228,9 +272,7 @@ while ( True ):
     elif ( select == "2" ):
         Volume = input( "Enter volume level ( 0 to 15, 15 is loud ) > " )
         
-        if ( fm_radio.SetVolume( Volume ) == True ):
-            fm_radio.ProgramRadio()
-        else:
+        if (not fm_radio.DecreaseVolume() ):
             print( "Invalid volume level( Range is 0 to 15 )" )
         
 #        

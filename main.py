@@ -49,9 +49,10 @@ def state_handler(pin):
         last_time_pressed = new_time   
 
 def up_handler(pin):
-    global count, selectcount, last_time_pressed, volume, handlerhour, handlermin, handlersec, alarm_am_pm
+    global count, selectcount, last_time_pressed, handlerhour, handlermin, handlersec, alarm_am_pm
     
     global ap_hour_format, am_pm, Dhour, Dmin, update_time_flag, am_pm
+    global fm_radio
     
     
     new_time = utime.ticks_ms()
@@ -132,14 +133,9 @@ def up_handler(pin):
 
               
         if(count == 5):
-            Settings = fm_radio.GetSettings()
-            volume = Settings[1]
-            print("Printing Current Volume in IRQ: %d" % volume)
-            volume = volume + 1
-            if ( fm_radio.SetVolume( volume ) == True ):
-                fm_radio.ProgramRadio()
-            else:
+            if(not fm_radio.IncreaseVolume()):
                 print( "Invalid volume level( Range is 0 to 15 )" )
+
             last_time_pressed = new_time
 
 def down_handler(pin):
@@ -217,13 +213,7 @@ def down_handler(pin):
                 am_pm = tempAm_pm
         
         if(count == 5):
-            Settings = fm_radio.GetSettings()
-            volume = Settings[1]
-            print("Printing Current Volume in IRQ: %d" % volume)
-            volume = volume - 1
-            if ( fm_radio.SetVolume( volume ) == True ):
-                fm_radio.ProgramRadio()
-            else:
+            if(not fm_radio.DecreaseVolume()):
                 print( "Invalid volume level( Range is 0 to 15 )" )
             last_time_pressed = new_time
    
@@ -289,11 +279,11 @@ def timer_interrupt(timer):
 
 def convert_time_12hour(Dhour, ap_hour_format): #Pass in the 24 hour time
     global am_pm
-
-    print("Convert to 12 hour called")
-    print("Dhour: ", Dhour)
-    print("AM or PM: ", am_pm)
-    print("AM PM Boolean: ", ap_hour_format)
+    # Print lines for Debugging
+    # print("Convert to 12 hour called")
+    # print("Dhour: ", Dhour)
+    # print("AM or PM: ", am_pm)
+    # print("AM PM Boolean: ", ap_hour_format)
 
     # Already in 12 hour format
     if(ap_hour_format == True):
@@ -322,11 +312,16 @@ menu_button.irq(trigger=machine.Pin.IRQ_RISING, handler=state_handler)
 up_button.irq(trigger=machine.Pin.IRQ_RISING, handler=up_handler)
 down_button.irq(trigger=machine.Pin.IRQ_RISING, handler=down_handler)
 select_button.irq(trigger=machine.Pin.IRQ_RISING, handler=select_handler)
-# snooze_button.irq(trigger=machine.Pin.IRQ_RISING, handler=snooze_handler)
+snooze_button.irq(trigger=machine.Pin.IRQ_RISING, handler=snooze_handler)
                 
-            
-# Initialize State Counter
-count = 0
+   
+# State Counter |   0 - Main Clock Screen
+#                   1 - Set 24/12 hour format               
+#                   2 - Set/Edit Time
+#                   3 - Set/Edit Alarm Clock
+#                   4 - Snooze (Enters this screen when alarm going off)
+#                   5 - Radio Info
+count = 0          
 
 # Track 12 or 24 hour format - Default 24 hour
 ap_hour_format = False
@@ -350,17 +345,12 @@ alarm_state = False
 alarm_active = False
 snooze_status = False
 
-#Until the count has moved to the next state the alarm wont be active, allowing for one to accurately select the desired time
-# if(initializetimer == True):
-#     alarm = Timer(mode = Timer.ONE_SHOT, period = (alarmhour + alarmmin + alarmsec) , callback = timer_interrupt )
-    
-# print("converted time: ", alarmhour)
-
 # Set flag for update to true
 update_time_flag = False
 
 rtc = machine.RTC()
 
+# Formatting placeholders for time values
 cur_time = "{}:{}:{}"
 cur_date = "{}/{}/{}"
 cur_hour = "{}"
@@ -369,6 +359,8 @@ cur_sec = "{}"
     
 alarm_hour_display = "{}"
 alarm_min_display = "{}"
+
+fm_radio = Radio( 100.3, 0, True)
 
 while True:
     
@@ -408,8 +400,6 @@ while True:
     #Home state
     if(count == 0):
         
-        fm_radio = Radio( 100.3, 0, True)
-        
         #Display Time and Date on Home screen
         oled.text(cur_time.format(Dhour, Dmin, Dsec), 30, 10)
         oled.text(cur_date.format(Dday, Dmonth, Dyear), 25, 20)
@@ -426,7 +416,6 @@ while True:
     #24 or 12 state
     elif(count == 1):
 
-        fm_radio = Radio( 100.3, 0, True )
         oled.text("24 or 12", 25, 32 )
         oled.text("Count is: %4d" % count, 0, 50 )
             
@@ -439,8 +428,6 @@ while True:
         
     #Set/Edit time state
     elif(count == 2):
-        fm_radio = Radio( 100.3, 0, True )
-        
         # Check if 12 hour or 24 hour
         # if(ap_hour_format == True):
             # Dhour = convert_time_12hour(timeObj)
@@ -642,8 +629,6 @@ while True:
             handlerhour = Dhour
             handlermin = Dmin
         
-        fm_radio = Radio( 100.3, 0, True )
-
         #If inputted time == cur_time, then make sound?
         
         #in the up handler make a variable called handlersec that increases by one with push of the button
@@ -846,7 +831,6 @@ while True:
         
         #If the mute status is false the radio will play outside of radio setting, ie the radio setting is turns on the radio
         #If the mute status is true the radio will not play after radio setting has been clicked thorugh
-         fm_radio = Radio( 107.3, 0, True )
          Settings = fm_radio.GetSettings()
          
          mute_status = Settings [0]

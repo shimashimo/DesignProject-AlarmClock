@@ -1,3 +1,4 @@
+from RadioClass import Radio
 
 def convert_to_24(Dhour, am_pm, ap_hour_format): # Pass in 12 hour time
 
@@ -35,10 +36,10 @@ def trigger_alarm(handlerhour, handlermin, handlersec, Dhour, Dmin, Dsec, ap_hou
         return True
     else:
         return False
-        
-    
-    
-    
+
+
+
+
 
     
     
