@@ -1,5 +1,5 @@
 from machine import Pin, SPI, I2C, Timer # Classes associated with the machine library. 
-import utime, time
+import utime
 from utime import localtime
 
 # The below specified libraries have to be included. Also, ssd1306.py must be saved on the Pico. 
@@ -37,11 +37,7 @@ menu_button = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
 up_button = machine.Pin(1, machine.Pin.IN, machine.Pin.PULL_UP)
 down_button = machine.Pin(2, machine.Pin.IN, machine.Pin.PULL_UP)
 select_button = machine.Pin(3, machine.Pin.IN, machine.Pin.PULL_UP)
-# snooze_button = machine.Pin(4, machine.Pin.IN, machine.Pin.PULL_UP)
-
-p4 = machine.Pin(4)
-speaker = machine.PWM(p4)
-speaker.duty_u16(int(65535/2))
+snooze_button = machine.Pin(4, machine.Pin.IN, machine.Pin.PULL_UP)
 
 led_onboard = machine.Pin(25, machine.Pin.OUT)     
    
@@ -50,8 +46,7 @@ def state_handler(pin):
     new_time = utime.ticks_ms()
     if (new_time - last_time_pressed) > 200:
         count += 1
-        last_time_pressed = new_time
-        
+        last_time_pressed = new_time   
 
 def up_handler(pin):
     global count, selectcount, last_time_pressed, volume, handlerhour, handlermin, handlersec, alarm_am_pm
@@ -406,25 +401,7 @@ while True:
             count = 4
             alarm_state = True
             alarm_active = True
-            
             print("ALARM")
-            # speaker.freq(554)
-            # time.sleep(1)
-            # speaker.freq(494)
-            # time.sleep(1)
-            # speaker.freq(440)
-            # time.sleep(1.5)
-
-            # print("First")
-
-            # speaker.freq(554)
-            # time.sleep(1)
-            # speaker.freq(494)
-            # time.sleep(1)
-            # speaker.freq(440)
-            # time.sleep(1.5)
-
-            # speaker.duty_u16(0)
         utime.sleep_ms(1000)
         
     

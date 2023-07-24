@@ -130,7 +130,7 @@ class Radio:
         self.Settings[7] = 0x80 + self.Volume
 
 #        
-# Update the settings array and transmitt it to the radio
+# Update the settings array and transmit it to the radio
 #
     def ProgramRadio( self ):
 
