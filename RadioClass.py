@@ -25,6 +25,7 @@ class Radio:
         # The radio is connected to device number 1 of the I2C device
         self.i2c_device = 1 
         self.i2c_device_address = 0x10
+        self.i2c_device_random = 0x11
 
 
         # Array used to configure the radio
@@ -144,12 +145,12 @@ class Radio:
         FrequencyStatus = (( self.RadioStatus[0x00] & 0x03 ) << 8 ) | ( self.RadioStatus[0x01] & 0xFF )
         FrequencyStatus = ( FrequencyStatus * 0.1 ) + 87.0
         
-        if (( self.RadioStatus[0x00] & 0x04 ) != 0x00 ):
-            StereoStatus = True
-        else:
-            StereoStatus = False
+        # if (( self.RadioStatus[0x00] & 0x04 ) != 0x00 ):
+        #     StereoStatus = True
+        # else:
+        #     StereoStatus = False
         
-        return( MuteStatus, VolumeStatus, FrequencyStatus, StereoStatus )
+        return( MuteStatus, VolumeStatus, FrequencyStatus )
 
 
 
@@ -165,8 +166,11 @@ class Radio:
         
         self.Volume = Volume + 1
 
-        self.Settings[7] = 0x80 + self.Volume
-        self.radio_i2c.writeto( self.i2c_device_address, self.Settings )
+        VolumeArray = bytearray(2)
+        VolumeArray[0] = 0x84
+        VolumeArray[1] = 0x80 + self.Volume  
+        
+        self.radio_i2c.writeto_mem( self.i2c_device_random, 0x05, VolumeArray)
 
         return True
 
@@ -182,7 +186,50 @@ class Radio:
         
         self.Volume = Volume - 1
 
-        self.Settings[7] = 0x80 + self.Volume
-        self.radio_i2c.writeto( self.i2c_device_address, self.Settings )
+        VolumeArray = bytearray(2)
+        VolumeArray[0] = 0x84
+        VolumeArray[1] = 0x80 + self.Volume  
+        
+        self.radio_i2c.writeto_mem( self.i2c_device_random, 0x05, VolumeArray)
 
         return True
+    
+    def ToggleMute( self ):
+        self.RadioStatus = self.radio_i2c.readfrom( self.i2c_device_address, 256)
+        
+        MuteArray = bytearray(2)
+        
+        # if Radio Muted, Set to UnMute
+        if (( self.RadioStatus[0xF0] & 0x40 ) != 0x00 ):
+            #MuteStatus = False
+            MuteArray[0] = 0x80
+
+        # if Radio UnMuted, Set to Mute
+        else:
+            # MuteStatus is True, so set to 0
+            MuteArray[0] = 0xC0
+            
+        MuteArray[1] = 0x09 | 0x04
+            
+        self.radio_i2c.writeto_mem( self.i2c_device_random, 0x02, MuteArray )
+        
+    def MuteRadio( self , MuteBool):
+        MuteArray = bytearray(2)
+        
+        if ( MuteBool ):
+            MuteArray[0] = 0x80
+        else:
+            MuteArray[0] = 0xC0
+            
+        MuteArray[1] = 0x09 | 0x04
+        
+        self.radio_i2c.writeto_mem( self.i2c_device_random, 0x02, MuteArray )
+        
+    def VolumeSet( self, Volume):
+        VolumeArray = bytearray(2)
+        
+        VolumeArray[0] = 0x84
+        VolumeArray[1] = 0x80 + Volume 
+        
+        self.radio_i2c.writeto_mem( self.i2c_device_random, 0x05, VolumeArray)
+        

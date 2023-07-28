@@ -31,16 +31,35 @@ def convert_to_24(Dhour, am_pm, ap_hour_format): # Pass in 12 hour time
 def trigger_alarm(handlerhour, handlermin, handlersec, Dhour, Dmin, Dsec, ap_hour_format, alarm_am_pm="DE", am_pm="DE"):
     
     if(ap_hour_format == True and handlerhour == Dhour and handlermin == Dmin and handlersec == Dsec and alarm_am_pm == am_pm):
+        print(ap_hour_format)
+        print(alarm_am_pm)
+        print(am_pm)
         return True
     elif(handlerhour == Dhour and handlermin == Dmin and handlersec == Dsec):
         return True
     else:
         return False
-
-
-
-
-
     
+def formatTimeZero(Dhour, Dmin, Dsec, oled, cur_hour, cur_min, cur_sec):
+    if(Dhour < 10):
+        oled.text("0", 32, 28)
+        oled.text(cur_hour.format(Dhour), 40, 28)
+    else:
+        oled.text(cur_hour.format(Dhour), 32, 28)
+
+    oled.text(":", 48, 28)
     
+    if(Dmin < 10):
+        oled.text("0", 56, 28)
+        oled.text(cur_min.format(Dmin), 64, 28)
+    else:
+        oled.text(cur_min.format(Dmin), 56, 28)
+    
+    oled.text(":", 72, 28)
+    
+    if(Dsec < 10):
+        oled.text("0", 80, 28)
+        oled.text(cur_sec.format(Dsec), 88, 28)
+    else:
+        oled.text(cur_sec.format(Dsec), 80, 28)
     

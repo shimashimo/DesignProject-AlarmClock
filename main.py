@@ -42,18 +42,25 @@ snooze_button = machine.Pin(4, machine.Pin.IN, machine.Pin.PULL_UP)
 led_onboard = machine.Pin(25, machine.Pin.OUT)     
    
 def state_handler(pin):
-    global count, last_time_pressed
+    global count, last_time_pressed, fm_radio
     new_time = utime.ticks_ms()
     if (new_time - last_time_pressed) > 200:
-        count += 1
+        if(count == 3):
+            fm_radio.MuteRadio(False)
+            fm_radio.VolumeSet(2)
+        
+        if(count == 5):
+            fm_radio.MuteRadio(True)
+            
+        if(not count == 4):    
+            count += 1
+        
         last_time_pressed = new_time   
 
 def up_handler(pin):
     global count, selectcount, last_time_pressed, handlerhour, handlermin, handlersec, alarm_am_pm
     
-    global ap_hour_format, am_pm, Dhour, Dmin, update_time_flag, am_pm
-    global fm_radio
-    
+    global ap_hour_format, am_pm, Dhour, Dmin, update_time_flag, am_pm, update_screen
     
     new_time = utime.ticks_ms()
     
@@ -135,12 +142,14 @@ def up_handler(pin):
         if(count == 5):
             if(not fm_radio.IncreaseVolume()):
                 print( "Invalid volume level( Range is 0 to 15 )" )
-
-            last_time_pressed = new_time
+                oled.text("Invalid Volume", 0, 50)
+                oled.show()
+            update_screen = True
+            
 
 def down_handler(pin):
     global count, selectcount, last_time_pressed, volume, handlerhour, handlermin, handlersec, alarm_am_pm
-    global ap_hour_format, Dhour, Dmin, update_time_flag, am_pm, snooze_status
+    global ap_hour_format, Dhour, Dmin, update_time_flag, am_pm, snooze_status, update_screen
     new_time = utime.ticks_ms()
     
     print("down irq called")
@@ -215,10 +224,13 @@ def down_handler(pin):
         if(count == 5):
             if(not fm_radio.DecreaseVolume()):
                 print( "Invalid volume level( Range is 0 to 15 )" )
-            last_time_pressed = new_time
+                oled.text("Invalid Volume", 0, 50)
+                oled.show()
+            
+            update_screen = True
    
 def select_handler(pin):
-    global count, selectcount, last_time_pressed, alarm_state
+    global count, selectcount, last_time_pressed, alarm_state, fm_radio, update_screen
     new_time = utime.ticks_ms()
     
     # print("select irq called")
@@ -237,20 +249,20 @@ def select_handler(pin):
         if(count == 4):
             print("PRESSING OFF")
             alarm_state = False
+            fm_radio.MuteRadio(True)
+            fm_radio.VolumeSet(1)
         
         if(count == 5):
-            Settings = fm_radio.GetSettings()
-            frequency = Settings[2]
-            print("Printing Current Frequency in IRQ: %d" % frequency)
-            frequency = frequency + 1
-            if ( fm_radio.SetFrequency( frequency ) == True ):
-                fm_radio.ProgramRadio()
-            else:
-                print( "Invalid volume level( Range is 0 to 15 )" )
-            last_time_pressed = new_time
+            print("Toggling Mute")
+            fm_radio.ToggleMute()
+            utime.sleep_ms(10)
+            update_screen = True
+            
+            
+            
 
 def snooze_handler(pin):
-    global count, last_time_pressed, snooze_status, oled
+    global count, last_time_pressed, snooze_status, oled, update_screen, fm_radio
     new_time = utime.ticks_ms()
 
     print("snooze irq called")
@@ -262,18 +274,23 @@ def snooze_handler(pin):
                 print("PRESSED SNOOZE")
 
                 oled.fill(0)
-                oled.text("Snoozing for 1 minute", 10, 10)
+                oled.text("Snoozing for", 20, 10)
+                oled.text("10 seconds", 20, 20)
                 oled.show()
 
                 snooze_timer.init(mode=Timer.ONE_SHOT, period=10000 , callback=timer_interrupt) #Set snooze timer for 60 seconds. Time in ms
+                fm_radio.MuteRadio(True)
                 snooze_status = True
+                update_screen = False
+                
 
 # Timer Interrupt for the alarm. Will go off after the passed time into built in timer mode in state 3
 def timer_interrupt(timer):
-    global alarm_active, snooze_status
+    global snooze_status, update_screen, fm_radio
     
     snooze_status = False
-    alarm_active = True
+    update_screen = True
+    fm_radio.MuteRadio(False)
     print("BEEP WAKE TF UP")
     
 
@@ -342,11 +359,12 @@ handlersec = 0
 
 alarm_am_pm = "AM" #Set default Alarm to AM
 alarm_state = False
-alarm_active = False
 snooze_status = False
 
 # Set flag for update to true
 update_time_flag = False
+
+update_screen = True
 
 rtc = machine.RTC()
 
@@ -360,12 +378,9 @@ cur_sec = "{}"
 alarm_hour_display = "{}"
 alarm_min_display = "{}"
 
-fm_radio = Radio( 100.3, 0, True)
+fm_radio = Radio( 101.9, 0, True)
 
-while True:
-    
-    # Clear the buffer
-    oled.fill(0)
+while True: 
     
     # Update Time object if updated
     if(update_time_flag == True):
@@ -384,44 +399,54 @@ while True:
     Dyear, Dmonth, Dday, Dweekday, Dhour, Dmin, Dsec, Dsubseconds = (timeObj)  
     
     #
-    if(trigger_alarm(handlerhour, handlermin, handlersec, Dhour, Dmin, Dsec, ap_hour_format, alarm_am_pm="DE", am_pm="DE") == True or alarm_state == True):
+    if(trigger_alarm(handlerhour, handlermin, handlersec, Dhour, Dmin, Dsec, ap_hour_format, alarm_am_pm="DE", am_pm="DE") == True):
+        alarm_state = True
         
-        if(snooze_status == True):
-            alarm_active = False
-            alarm_state = True
-        else:
-            count = 4
-            alarm_state = True
-            alarm_active = True
-            print("ALARM")
-        utime.sleep_ms(1000)
+        count = 4
+        fm_radio.MuteRadio(False)
+        fm_radio.VolumeSet(15)
+        update_screen = True
+        print("ALARM")
+        #utime.sleep_ms(1000)
         
     
     #Home state
     if(count == 0):
         
+        # Clear the buffer
+        oled.fill(0)
+        
         #Display Time and Date on Home screen
-        oled.text(cur_time.format(Dhour, Dmin, Dsec), 30, 10)
-        oled.text(cur_date.format(Dday, Dmonth, Dyear), 25, 20)
+        #oled.text(cur_time.format(Dhour, Dmin, Dsec), 36, 28)
+        formatTimeZero(Dhour, Dmin, Dsec, oled, cur_hour, cur_min, cur_sec)
+        oled.text(cur_date.format(Dday, Dmonth, Dyear), 28, 56)
 
         if(ap_hour_format == True):
-            oled.text(am_pm, 100, 10)
+            oled.text(am_pm, 102, 28)
         
         # Update the text on the screen
-        oled.text("Count is: %4d" % count, 0, 50 ) # Print the value stored in the variable Count. #line of text is 7 pixels
+        #oled.text("Count is: %4d" % count, 0, 50 ) # Print the value stored in the variable Count. #line of text is 7 pixels
+        
+        oled.show()
 
         # Slow Output
         # utime.sleep_ms(50)
     
     #24 or 12 state
     elif(count == 1):
+        
+        oled.fill(0)
 
-        oled.text("24 or 12", 25, 32 )
-        oled.text("Count is: %4d" % count, 0, 50 )
+        #oled.text(cur_time.format(Dhour, Dmin, Dsec), 36, 28)
+        formatTimeZero(Dhour, Dmin, Dsec, oled, cur_hour, cur_min, cur_sec)
+
+        oled.text("Set Format", 24, 8 )
             
-        oled.text(cur_time.format(Dhour, Dmin, Dsec), 30, 10)
+        
         if(ap_hour_format == True):
-            oled.text(am_pm, 100, 10)
+            oled.text(am_pm, 102, 28)
+        
+        oled.show()
 
         # Slow Output
         # utime.sleep_ms(250)
@@ -431,7 +456,7 @@ while True:
         # Check if 12 hour or 24 hour
         # if(ap_hour_format == True):
             # Dhour = convert_time_12hour(timeObj)
-        
+        oled.fill(0)
         
         # Blink the Hours to show minutes editing is selected
         if(selectcount == 0):
@@ -623,6 +648,8 @@ while True:
     
     #Set alarm state
     elif(count == 3):
+
+        oled.fill(0)
 
         # Set the alarm to the current time on first run through program.
         if(handlerhour == 99 and handlermin == 99):
@@ -818,35 +845,41 @@ while True:
         
     #Alarm Active State
     elif(count == 4):
-        oled.fill(0)
-        oled.text("Alarm!", 20, 10 )
-        oled.text("\'Stem\' to Snooze", 2, 30)
-        oled.text("\'Select\' for Off", 2, 50)
-        # oled.text("Count is: %4d" % count, 0, 50 )
-        oled.show()
+        if(alarm_state == False):
+            count += 1
+            update_screen = True
+        else:
+            #print(update_screen)
+            if(update_screen == True):
+                oled.fill(0)
+                oled.text("Alarm!", 40, 10 )
+                oled.text("Btn 5: Snooze", 2, 30)
+                oled.text("Select: Off", 2, 50)
+                # oled.text("Count is: %4d" % count, 0, 50 )
+                oled.show()
+                update_screen = False
         
     #Radio State
     elif(count == 5):
-         oled.text("Count is: %4d" % count, 0, 50 )
         
         #If the mute status is false the radio will play outside of radio setting, ie the radio setting is turns on the radio
         #If the mute status is true the radio will not play after radio setting has been clicked thorugh
-         Settings = fm_radio.GetSettings()
+        Settings = fm_radio.GetSettings()
+        utime.sleep_ms(100)
          
-         mute_status = Settings [0]
-         oled.text("Zero: %d" % mute_status, 0, 10 )
-         
-         current_volume = Settings[1]
-         oled.text("Volume: %d" % current_volume, 0, 20 )
-         
-         current_frequency = Settings [2]
-         oled.text("Frequency: %.1f" % current_frequency, 0, 30 )
-         
-         current_third = Settings [3]
-         oled.text("Third: %d" % current_third, 0, 40 )
+        mute_status = bool(Settings [0])
+        current_volume = Settings[1]
+        current_frequency = Settings [2]
         
-         utime.sleep_ms(500)
-        
+        #print(update_screen)
+        if(update_screen == True):
+            oled.fill(0)
+            oled.text("Mute: %d" % mute_status, 0, 10 )
+            oled.text("Volume: %d" % current_volume, 0, 20 )
+            oled.text("Frequency: %.1f" % current_frequency, 0, 30 )
+            oled.show()
+            update_screen = False
+        utime.sleep_ms(500)
 
     elif(count > 5):
         count = 0
@@ -858,6 +891,6 @@ while True:
     #oled.rect( 0, 50, 128, 5, 1  )        
 
     # Transfer the buffer to the screen
-    oled.show()
+    #oled.show()
         
     
